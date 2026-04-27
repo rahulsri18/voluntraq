@@ -34,5 +34,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+
 # Flutter web build
-web/
+# web/ is source, build/web/ is output. 
+# build/ is already ignored.
