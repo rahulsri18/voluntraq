@@ -53,3 +53,14 @@ jobs:
           args: appdistribution:distribute voluntraq_frontend/build/app/outputs/flutter-apk/app-release.apk --app 1:591571872017:android:241a188676dee13fee84b0 --groups testers
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+      - name: Build Web
+        run: flutter build web
+        working-directory: voluntraq_frontend
+
+      - name: Deploy to Firebase Hosting
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
