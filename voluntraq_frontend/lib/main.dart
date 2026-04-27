@@ -8,10 +8,21 @@ import 'services/session_manager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(const VoluntraQApp());
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    runApp(const VoluntraQApp());
+  } catch (e) {
+    print('Firebase Initialization Error: $e');
+    runApp(MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Text('Initialization Error: $e'),
+        ),
+      ),
+    ));
+  }
 }
 
 class VoluntraQApp extends StatefulWidget {
