@@ -16,7 +16,6 @@ build/
 .env.local
 .env.*.local
 serviceAccountKey.json
-firebase_options.dart
 
 # IDEs and editors
 .idea/
