@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import '../utils/constants.dart';
 import '../services/api_service.dart';
+import '../services/auth_service.dart';
 import '../services/session_manager.dart';
 import 'admin_dashboard_screen.dart';
 
@@ -29,9 +30,10 @@ class _AdminAuthScreenState extends State<AdminAuthScreen> {
     
     try {
       if (_isLogin) {
-        final result = await ApiService.login(_emailController.text, _passwordController.text);
+        final result = await AuthService.login(_emailController.text, _passwordController.text);
         if (mounted) {
-          await SessionManager.saveSession(result['uid'], 'admin');
+          final role = await AuthService.getUserRole(result.user!.uid);
+          await SessionManager.saveSession(result.user!.uid, role);
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const AdminDashboardScreen()),
@@ -39,15 +41,16 @@ class _AdminAuthScreenState extends State<AdminAuthScreen> {
           );
         }
       } else {
-        final result = await ApiService.register(
-          _nameController.text,
-          _emailController.text,
-          _passwordController.text,
-          'N/A', // Admin DOB not critical
+        final result = await AuthService.register(
+          name: _nameController.text,
+          email: _emailController.text,
+          password: _passwordController.text,
+          dob: 'N/A', // Admin DOB not critical
+          role: 'admin',
           ngoName: _ngoNameController.text,
         );
         if (mounted) {
-          await SessionManager.saveSession(result['uid'], 'admin');
+          await SessionManager.saveSession(result.user!.uid, 'admin');
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const AdminDashboardScreen()),
