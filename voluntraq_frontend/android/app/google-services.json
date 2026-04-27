@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "591571872017",
+    "firebase_url": "https://voluntraq-hackathon-default-rtdb.firebaseio.com",
+    "project_id": "voluntraq-hackathon",
+    "storage_bucket": "voluntraq-hackathon.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591571872017:android:241a188676dee13fee84b0",
+        "android_client_info": {
+          "package_name": "com.voluntraq.voluntraq_frontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxOpf9S0QY23A1-9slmtj3ASTXvJAxcag"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
