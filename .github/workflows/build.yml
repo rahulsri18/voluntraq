@@ -46,3 +46,10 @@ jobs:
           body: "Direct download link for the VoluntraQ Android APK."
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
+
+      - name: Firebase App Distribution
+        uses: w9jds/firebase-action@master
+        with:
+          args: appdistribution:distribute voluntraq_frontend/build/app/outputs/flutter-apk/app-release.apk --app 1:591571872017:android:241a188676dee13fee84b0 --groups testers
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
