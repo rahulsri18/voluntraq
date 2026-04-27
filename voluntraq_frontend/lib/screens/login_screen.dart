@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import '../utils/constants.dart';
 import '../services/api_service.dart';
+import '../services/auth_service.dart';
 import '../services/session_manager.dart';
 import 'volunteer_home_screen.dart';
 import 'profile_setup_screen.dart';
@@ -45,34 +46,36 @@ class _LoginScreenState extends State<LoginScreen> {
     
     try {
       if (_isLogin) {
-        final result = await ApiService.login(_emailController.text, _passwordController.text);
+        final result = await AuthService.login(_emailController.text, _passwordController.text);
         if (mounted) {
-          await SessionManager.saveSession(result['uid'], result['userData']?['role'] ?? 'volunteer');
+          final role = await AuthService.getUserRole(result.user!.uid);
+          await SessionManager.saveSession(result.user!.uid, role);
+          
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Login Successful! Welcome Back.'), backgroundColor: Colors.green),
           );
-          print('Navigating to VolunteerHomeScreen...');
+          
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => VolunteerHomeScreen(userId: result['uid'])),
+            MaterialPageRoute(builder: (context) => VolunteerHomeScreen(userId: result.user!.uid)),
             (route) => false,
           );
         }
       } else {
-        final result = await ApiService.register(
-          _nameController.text,
-          _emailController.text,
-          _passwordController.text,
-          _dobController.text,
+        final result = await AuthService.register(
+          name: _nameController.text,
+          email: _emailController.text,
+          password: _passwordController.text,
+          dob: _dobController.text,
         );
         if (mounted) {
-          await SessionManager.saveSession(result['uid'], 'volunteer');
+          await SessionManager.saveSession(result.user!.uid, 'volunteer');
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Registration Successful! Welcome Hero.'), backgroundColor: Colors.green),
           );
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => ProfileSetupScreen(userId: result['uid'])),
+            MaterialPageRoute(builder: (context) => ProfileSetupScreen(userId: result.user!.uid)),
             (route) => false,
           );
         }
